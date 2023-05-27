@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: admin-expense-tracker
+  - include:
+      file: migration/V1__create_table.sql
+      relativeToChangelogFile: true
