@@ -1,6 +1,6 @@
 /*
     MIT License
-
+    
     Copyright (c) 2023 Beșelea Dumitru
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,15 +22,27 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.service;
+package com.expense.tracker.controller;
 
-import com.expense.tracker.model.UserDTO;
+import com.expense.tracker.model.ExpenseDTO;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author dimab
- * @version expense-tracker
+ * @version expensive-tracker
  * @apiNote 27.05.2023
  */
-public interface UserService {
-    UserDTO create(UserDTO userDTO);
+@RestController
+@Tag(name = "Expenses")
+@RequiredArgsConstructor
+@RequestMapping("expenses")
+public class ExpenseController {
+    @PostMapping
+    public void add(@Valid @RequestBody ExpenseDTO expenseDTO,
+                    @RequestHeader(value = "api_key") String apiKey) {
+
+    }
 }

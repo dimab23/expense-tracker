@@ -22,40 +22,15 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.controller;
+package com.expense.tracker.service;
 
-import com.expense.tracker.model.ApiKey;
-import com.expense.tracker.model.UserDTO;
-import com.expense.tracker.service.user.UserService;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import com.expense.tracker.model.ExpenseDTO;
 
 /**
  * @author dimab
- * @version expense-tracker
- * @apiNote 27.05.2023
+ * @version expensive-tracker
+ * @apiNote 28.05.2023
  */
-@RestController
-@Tag(name = "Users")
-@RequiredArgsConstructor
-@RequestMapping("users")
-@SecurityRequirement(name = "basicAuth")
-public class UserController {
-    private final UserService userService;
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ApiKey create(@Valid @RequestBody UserDTO userDTO) {
-        return userService.create(userDTO);
-    }
-
-    @PostMapping("auth")
-    @ResponseStatus(HttpStatus.OK)
-    public ApiKey auth(@Valid @RequestBody UserDTO userDTO) {
-        return userService.auth(userDTO);
-    }
+public interface ExpensiveObserver {
+    ExpenseDTO update(ExpenseDTO expenseDTO);
 }

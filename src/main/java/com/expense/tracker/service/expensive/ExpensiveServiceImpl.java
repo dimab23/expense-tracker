@@ -1,6 +1,6 @@
 /*
     MIT License
-
+    
     Copyright (c) 2023 Beșelea Dumitru
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,40 +22,30 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.controller;
+package com.expense.tracker.service.expensive;
 
-import com.expense.tracker.model.ApiKey;
-import com.expense.tracker.model.UserDTO;
-import com.expense.tracker.service.user.UserService;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
+import com.expense.tracker.exception.UnauthorizedException;
+import com.expense.tracker.model.ExpenseDTO;
+import com.expense.tracker.model.tables.pojos.User;
+import com.expense.tracker.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
 
 /**
  * @author dimab
- * @version expense-tracker
- * @apiNote 27.05.2023
+ * @version expensive-tracker
+ * @apiNote 28.05.2023
  */
-@RestController
-@Tag(name = "Users")
+@Service
 @RequiredArgsConstructor
-@RequestMapping("users")
-@SecurityRequirement(name = "basicAuth")
-public class UserController {
-    private final UserService userService;
+public class ExpensiveServiceImpl implements ExpensiveService {
+    private final UserRepository userRepository;
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ApiKey create(@Valid @RequestBody UserDTO userDTO) {
-        return userService.create(userDTO);
-    }
+    @Override
+    public ExpenseDTO create(ExpenseDTO expenseDTO, String token) {
+        User user = userRepository.findByToken(token);
+        if (user == null) throw new UnauthorizedException();
 
-    @PostMapping("auth")
-    @ResponseStatus(HttpStatus.OK)
-    public ApiKey auth(@Valid @RequestBody UserDTO userDTO) {
-        return userService.auth(userDTO);
+        return null;
     }
 }

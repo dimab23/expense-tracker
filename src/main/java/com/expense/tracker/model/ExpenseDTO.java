@@ -1,6 +1,6 @@
 /*
     MIT License
-
+    
     Copyright (c) 2023 Beșelea Dumitru
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,40 +22,28 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.controller;
+package com.expense.tracker.model;
 
-import com.expense.tracker.model.ApiKey;
-import com.expense.tracker.model.UserDTO;
-import com.expense.tracker.service.user.UserService;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.Date;
 
 /**
  * @author dimab
- * @version expense-tracker
+ * @version expensive-tracker
  * @apiNote 27.05.2023
  */
-@RestController
-@Tag(name = "Users")
-@RequiredArgsConstructor
-@RequestMapping("users")
-@SecurityRequirement(name = "basicAuth")
-public class UserController {
-    private final UserService userService;
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ApiKey create(@Valid @RequestBody UserDTO userDTO) {
-        return userService.create(userDTO);
-    }
-
-    @PostMapping("auth")
-    @ResponseStatus(HttpStatus.OK)
-    public ApiKey auth(@Valid @RequestBody UserDTO userDTO) {
-        return userService.auth(userDTO);
-    }
+@Getter
+@Setter
+public class ExpenseDTO {
+    @NotBlank
+    private Double payment;
+    @NotBlank
+    private String currency;
+    @NotBlank
+    @JsonProperty("payment_date")
+    private Date paymentDate;
 }

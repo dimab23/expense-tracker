@@ -22,6 +22,7 @@
         <lombok.version>1.18.28</lombok.version>
         <postgresql.version>42.6.0</postgresql.version>
         <springdoc.openapi.ui>2.1.0</springdoc.openapi.ui>
+        <commons.codec.version>1.15</commons.codec.version>
         <liquibase.core.version>4.22.0</liquibase.core.version>
     </properties>
 
@@ -79,6 +80,11 @@
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>${springdoc.openapi.ui}</version>
         </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>${commons.codec.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -133,7 +139,7 @@
                                 </generate>
                                 <target>
                                     <packageName>
-                                        com.expense.tracker.model.entity
+                                        com.expense.tracker.model
                                     </packageName>
                                     <directory>
                                         target/generated-sources/jooq

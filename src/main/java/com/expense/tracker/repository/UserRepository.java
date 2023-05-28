@@ -22,20 +22,19 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.service;
+package com.expense.tracker.repository;
 
-import com.expense.tracker.model.UserDTO;
-import org.springframework.stereotype.Service;
+import com.expense.tracker.model.tables.pojos.User;
 
 /**
  * @author dimab
- * @version expense-tracker
+ * @version expensive-tracker
  * @apiNote 27.05.2023
  */
-@Service
-public class UserServiceImpl implements UserService {
-    @Override
-    public UserDTO create(UserDTO userDTO) {
-        return null;
-    }
+public interface UserRepository {
+    User insert(User user);
+
+    User findByToken(String token);
+
+    User findByUsername(String username);
 }

@@ -1,6 +1,6 @@
 /*
     MIT License
-
+    
     Copyright (c) 2023 Beșelea Dumitru
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,40 +22,31 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.controller;
+package com.expense.tracker.exception;
 
-import com.expense.tracker.model.ApiKey;
-import com.expense.tracker.model.UserDTO;
-import com.expense.tracker.service.user.UserService;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * @author dimab
- * @version expense-tracker
+ * @version expensive-tracker
  * @apiNote 27.05.2023
  */
-@RestController
-@Tag(name = "Users")
-@RequiredArgsConstructor
-@RequestMapping("users")
-@SecurityRequirement(name = "basicAuth")
-public class UserController {
-    private final UserService userService;
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ApiKey create(@Valid @RequestBody UserDTO userDTO) {
-        return userService.create(userDTO);
+@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+public class UnauthorizedException extends RuntimeException {
+    /**
+     * Constructs a new runtime exception with the specified detail message.
+     * The cause is not initialized, and may subsequently be initialized by a
+     * call to {@link #initCause}.
+     *
+     * @param message the detail message. The detail message is saved for
+     *                later retrieval by the {@link #getMessage()} method.
+     */
+    public UnauthorizedException(String message) {
+        super(message);
     }
 
-    @PostMapping("auth")
-    @ResponseStatus(HttpStatus.OK)
-    public ApiKey auth(@Valid @RequestBody UserDTO userDTO) {
-        return userService.auth(userDTO);
+    public UnauthorizedException() {
+        super("Current user did not login to the application!");
     }
 }

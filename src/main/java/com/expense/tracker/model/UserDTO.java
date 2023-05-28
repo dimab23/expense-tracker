@@ -24,10 +24,12 @@
 
 package com.expense.tracker.model;
 
+import com.expense.tracker.model.tables.pojos.User;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  * @author dimab
@@ -42,4 +44,25 @@ public class UserDTO {
     private String username;
     @NotBlank(message = "password is required")
     private String password;
+
+    public User toUser() {
+        User user = new User();
+        user.setUsername(getUsername());
+        user.setPassword(getEncryptedPassword());
+        user.setToken(generateToken());
+
+        return user;
+    }
+
+    public boolean isCorrectPassword(User user) {
+        return user.getPassword().equals(getEncryptedPassword());
+    }
+
+    private String generateToken() {
+        return DigestUtils.sha256Hex(String.format("%s-%s", getUsername(), getEncryptedPassword()));
+    }
+
+    private String getEncryptedPassword() {
+        return DigestUtils.sha256Hex(getPassword());
+    }
 }
