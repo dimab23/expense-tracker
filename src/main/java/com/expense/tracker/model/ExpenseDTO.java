@@ -24,26 +24,59 @@
 
 package com.expense.tracker.model;
 
+import com.expense.tracker.model.tables.pojos.Currency;
+import com.expense.tracker.model.tables.pojos.Expense;
+import com.expense.tracker.model.tables.pojos.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * @author dimab
- * @version expensive-tracker
+ * @version expense-tracker
  * @apiNote 27.05.2023
  */
 @Getter
 @Setter
 public class ExpenseDTO {
-    @NotBlank
-    private Double payment;
+    @DecimalMin(value = "0.0", inclusive = false)
+    private double payment;
     @NotBlank
     private String currency;
-    @NotBlank
+    @NotNull
     @JsonProperty("payment_date")
-    private Date paymentDate;
+    private LocalDate paymentDate;
+
+    public Expense toExpense(Currency currency, User user) {
+        Expense expense = new Expense();
+        expense.setCurrencyId(currency.getId());
+        expense.setPayment(getPayment());
+        expense.setPaymentDate(getPaymentDate());
+        expense.setUserId(user.getId());
+
+        return expense;
+    }
+
+    public Expense toExpense(Expense expense, Currency currency, User user) {
+        expense.setCurrencyId(currency.getId());
+        expense.setPayment(getPayment());
+        expense.setPaymentDate(getPaymentDate());
+        expense.setUserId(user.getId());
+
+        return expense;
+    }
+
+    public ExpenseResult toExpenseResult(Expense expense) {
+        return ExpenseResult.builder()
+                .id(expense.getId())
+                .paymentDate(expense.getPaymentDate())
+                .payment(expense.getPayment())
+                .currency(getCurrency())
+                .build();
+    }
 }

@@ -1,6 +1,6 @@
 /*
     MIT License
-
+    
     Copyright (c) 2023 Beșelea Dumitru
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,15 +22,17 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.service;
+package com.expense.tracker.config;
 
-import com.expense.tracker.model.ExpenseDTO;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * @author dimab
- * @version expensive-tracker
+ * @version expense-tracker
  * @apiNote 28.05.2023
  */
-public interface ExpensiveObserver {
-    ExpenseDTO update(ExpenseDTO expenseDTO);
+@Configuration
+@EnableScheduling
+public class ScheduledConfig {
 }

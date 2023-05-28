@@ -22,15 +22,13 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.service.exchange;
+package com.expense.tracker.service.expense.observer;
 
-import com.expense.tracker.service.iterator.ExchangeHistoryIterator;
-import org.springframework.scheduling.annotation.Scheduled;
+import com.expense.tracker.model.ExpenseDTO;
+import com.expense.tracker.service.currency.CurrencyService;
+import com.expense.tracker.service.exchange.ExchangeService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author dimab
@@ -38,25 +36,14 @@ import java.util.Set;
  * @apiNote 28.05.2023
  */
 @Service
-public class ExchangeServiceImpl implements ExchangeService {
-    private final Set<LocalDate> dates = new HashSet<>();
+@RequiredArgsConstructor
+public class ExpenseObserverImpl implements ExpenseObserver {
+    private final ExchangeService exchangeService;
+    private final CurrencyService currencyService;
 
     @Override
-    @Scheduled(fixedDelayString = "PT1M")
-    public void refresh() {
-        ExchangeHistoryIterator historyIterator = new ExchangeHistoryIterator(dates);
-        while (historyIterator.hasNext()) {
-            LocalDate date = historyIterator.next();
-        }
-    }
-
-    @Override
-    public void detach(LocalDate date) {
-        dates.remove(date);
-    }
-
-    @Override
-    public void attach(LocalDate date) {
-        dates.add(date);
+    public void update(ExpenseDTO expenseDTO) {
+        if (expenseDTO.getCurrency().equals(currencyService.defaultCurrency())) return;
+        exchangeService.attach(expenseDTO.getPaymentDate());
     }
 }

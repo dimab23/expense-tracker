@@ -22,41 +22,27 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.service.exchange;
+package com.expense.tracker.model;
 
-import com.expense.tracker.service.iterator.ExchangeHistoryIterator;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author dimab
  * @version expense-tracker
  * @apiNote 28.05.2023
  */
-@Service
-public class ExchangeServiceImpl implements ExchangeService {
-    private final Set<LocalDate> dates = new HashSet<>();
-
-    @Override
-    @Scheduled(fixedDelayString = "PT1M")
-    public void refresh() {
-        ExchangeHistoryIterator historyIterator = new ExchangeHistoryIterator(dates);
-        while (historyIterator.hasNext()) {
-            LocalDate date = historyIterator.next();
-        }
-    }
-
-    @Override
-    public void detach(LocalDate date) {
-        dates.remove(date);
-    }
-
-    @Override
-    public void attach(LocalDate date) {
-        dates.add(date);
-    }
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class ExpenseResult {
+    private Long id;
+    private String currency;
+    private double payment;
+    @JsonProperty("payment_date")
+    private LocalDate paymentDate;
 }

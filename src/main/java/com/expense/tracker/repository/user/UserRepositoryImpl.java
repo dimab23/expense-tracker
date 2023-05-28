@@ -22,7 +22,7 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.repository;
+package com.expense.tracker.repository.user;
 
 import com.expense.tracker.model.Tables;
 import com.expense.tracker.model.tables.pojos.User;
@@ -33,7 +33,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  * @author dimab
- * @version expensive-tracker
+ * @version expense-tracker
  * @apiNote 27.05.2023
  */
 @Repository

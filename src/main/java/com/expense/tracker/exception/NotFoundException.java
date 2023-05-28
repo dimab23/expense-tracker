@@ -22,15 +22,23 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.service.expensive;
-
-import com.expense.tracker.model.ExpenseDTO;
+package com.expense.tracker.exception;
 
 /**
  * @author dimab
- * @version expensive-tracker
+ * @version expense-tracker
  * @apiNote 28.05.2023
  */
-public interface ExpensiveService {
-    ExpenseDTO create(ExpenseDTO expenseDTO, String token);
+public class NotFoundException extends RuntimeException {
+    /**
+     * Constructs a new runtime exception with the specified detail message.
+     * The cause is not initialized, and may subsequently be initialized by a
+     * call to {@link #initCause}.
+     *
+     * @param message the detail message. The detail message is saved for
+     *                later retrieval by the {@link #getMessage()} method.
+     */
+    public NotFoundException(String message) {
+        super(message);
+    }
 }

@@ -1,7 +1,7 @@
 CREATE TABLE "currency"
 (
     id   BIGSERIAL PRIMARY KEY,
-    name VARCHAR NOT NULL
+    name VARCHAR NOT NULL UNIQUE
 );
 
 CREATE TABLE "user"
@@ -13,17 +13,20 @@ CREATE TABLE "user"
     created  TIMESTAMP    NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE "expensive"
+CREATE TABLE "expense"
 (
     id           BIGSERIAL PRIMARY KEY,
     payment      DOUBLE PRECISION NOT NULL,
     currency_id  BIGINT           NOT NULL REFERENCES currency (id),
-    payment_date DATE             NOT NULL
+    payment_date DATE             NOT NULL,
+    user_id      BIGINT           NOT NULL
 );
 
 CREATE TABLE "exchange"
 (
-    id          BIGSERIAL PRIMARY KEY,
-    currency_id BIGINT           NOT NULL,
-    value       DOUBLE PRECISION NOT NULL
+    id            BIGSERIAL PRIMARY KEY,
+    currency_id   BIGINT           NOT NULL,
+    value         DOUBLE PRECISION NOT NULL,
+    exchange_date DATE             NOT NULL,
+    UNIQUE (currency_id, value, exchange_date)
 );

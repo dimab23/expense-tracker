@@ -1,6 +1,6 @@
 /*
     MIT License
-    
+
     Copyright (c) 2023 Beșelea Dumitru
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,41 +22,15 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.service.exchange;
+package com.expense.tracker.service.expense.observer;
 
-import com.expense.tracker.service.iterator.ExchangeHistoryIterator;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import com.expense.tracker.model.ExpenseDTO;
 
 /**
  * @author dimab
  * @version expense-tracker
  * @apiNote 28.05.2023
  */
-@Service
-public class ExchangeServiceImpl implements ExchangeService {
-    private final Set<LocalDate> dates = new HashSet<>();
-
-    @Override
-    @Scheduled(fixedDelayString = "PT1M")
-    public void refresh() {
-        ExchangeHistoryIterator historyIterator = new ExchangeHistoryIterator(dates);
-        while (historyIterator.hasNext()) {
-            LocalDate date = historyIterator.next();
-        }
-    }
-
-    @Override
-    public void detach(LocalDate date) {
-        dates.remove(date);
-    }
-
-    @Override
-    public void attach(LocalDate date) {
-        dates.add(date);
-    }
+public interface ExpenseObserver {
+    void update(ExpenseDTO expense);
 }

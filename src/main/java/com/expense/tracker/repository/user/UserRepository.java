@@ -22,13 +22,13 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.repository;
+package com.expense.tracker.repository.user;
 
 import com.expense.tracker.model.tables.pojos.User;
 
 /**
  * @author dimab
- * @version expensive-tracker
+ * @version expense-tracker
  * @apiNote 27.05.2023
  */
 public interface UserRepository {

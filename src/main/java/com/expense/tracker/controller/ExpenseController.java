@@ -25,14 +25,17 @@
 package com.expense.tracker.controller;
 
 import com.expense.tracker.model.ExpenseDTO;
+import com.expense.tracker.model.ExpenseResult;
+import com.expense.tracker.service.expense.ExpenseService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 /**
  * @author dimab
- * @version expensive-tracker
+ * @version expense-tracker
  * @apiNote 27.05.2023
  */
 @RestController
@@ -40,9 +43,20 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("expenses")
 public class ExpenseController {
-    @PostMapping
-    public void add(@Valid @RequestBody ExpenseDTO expenseDTO,
-                    @RequestHeader(value = "api_key") String apiKey) {
+    private final ExpenseService expenseService;
 
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public ExpenseResult add(@Valid @RequestBody ExpenseDTO expenseDTO,
+                             @RequestHeader(value = "api_key") String apiKey) {
+        return expenseService.create(expenseDTO, apiKey);
+    }
+
+    @PutMapping("{expense_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ExpenseResult update(@PathVariable("expense_id") long id,
+                                @Valid @RequestBody ExpenseDTO expenseDTO,
+                                @RequestHeader(value = "api_key") String apiKey) {
+        return expenseService.update(expenseDTO, apiKey, id);
     }
 }

@@ -26,6 +26,7 @@ package com.expense.tracker.service.user;
 
 import com.expense.tracker.model.ApiKey;
 import com.expense.tracker.model.UserDTO;
+import com.expense.tracker.model.tables.pojos.User;
 
 /**
  * @author dimab
@@ -36,4 +37,6 @@ public interface UserService {
     ApiKey auth(UserDTO userDTO);
 
     ApiKey create(UserDTO userDTO);
+
+    User findByToken(String token);
 }

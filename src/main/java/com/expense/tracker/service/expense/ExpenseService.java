@@ -22,15 +22,21 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.client;
+package com.expense.tracker.service.expense;
 
-import org.springframework.stereotype.Component;
+import com.expense.tracker.model.ExpenseDTO;
+import com.expense.tracker.model.ExpenseResult;
+import com.expense.tracker.model.tables.pojos.Expense;
 
 /**
  * @author dimab
- * @version expensive-tracker
+ * @version expense-tracker
  * @apiNote 28.05.2023
  */
-@Component
-public class ExchangeRatesClient implements ExchangeClient {
+public interface ExpenseService {
+    Expense findById(Long id);
+
+    ExpenseResult create(ExpenseDTO expenseDTO, String token);
+
+    ExpenseResult update(ExpenseDTO expenseDTO, String token, long id);
 }

@@ -26,11 +26,17 @@ package com.expense.tracker.client;
 
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 /**
  * @author dimab
- * @version expensive-tracker
+ * @version expense-tracker
  * @apiNote 28.05.2023
  */
 @Component
 public class ExchangeRateClient implements ExchangeClient {
+    @Override
+    public void history(LocalDate localDate) {
+
+    }
 }

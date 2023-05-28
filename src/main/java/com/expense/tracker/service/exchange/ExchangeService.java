@@ -24,13 +24,17 @@
 
 package com.expense.tracker.service.exchange;
 
-import com.expense.tracker.model.ExpenseDTO;
+import java.time.LocalDate;
 
 /**
  * @author dimab
- * @version expensive-tracker
+ * @version expense-tracker
  * @apiNote 28.05.2023
  */
 public interface ExchangeService {
-    void attach(ExpenseDTO expenseDTO);
+    void refresh();
+
+    void detach(LocalDate date);
+
+    void attach(LocalDate date);
 }

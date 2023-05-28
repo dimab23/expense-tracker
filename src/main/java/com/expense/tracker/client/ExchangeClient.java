@@ -24,10 +24,13 @@
 
 package com.expense.tracker.client;
 
+import java.time.LocalDate;
+
 /**
  * @author dimab
- * @version expensive-tracker
+ * @version expense-tracker
  * @apiNote 28.05.2023
  */
 public interface ExchangeClient {
+    void history(LocalDate localDate);
 }

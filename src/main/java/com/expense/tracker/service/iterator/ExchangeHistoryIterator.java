@@ -22,14 +22,11 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.service.exchange;
-
-import com.expense.tracker.service.iterator.ExchangeHistoryIterator;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
+package com.expense.tracker.service.iterator;
 
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 /**
@@ -37,26 +34,37 @@ import java.util.Set;
  * @version expense-tracker
  * @apiNote 28.05.2023
  */
-@Service
-public class ExchangeServiceImpl implements ExchangeService {
-    private final Set<LocalDate> dates = new HashSet<>();
+public class ExchangeHistoryIterator implements Iterator<LocalDate> {
+    private final LocalDate[] dates;
+    private int index;
 
+    public ExchangeHistoryIterator(Set<LocalDate> dates) {
+        this.dates = dates.toArray(new LocalDate[0]);
+    }
+
+    /**
+     * Returns {@code true} if the iteration has more elements.
+     * (In other words, returns {@code true} if {@link #next} would
+     * return an element rather than throwing an exception.)
+     *
+     * @return {@code true} if the iteration has more elements
+     */
     @Override
-    @Scheduled(fixedDelayString = "PT1M")
-    public void refresh() {
-        ExchangeHistoryIterator historyIterator = new ExchangeHistoryIterator(dates);
-        while (historyIterator.hasNext()) {
-            LocalDate date = historyIterator.next();
+    public boolean hasNext() {
+        return index < dates.length;
+    }
+
+    /**
+     * Returns the next element in the iteration.
+     *
+     * @return the next element in the iteration
+     * @throws NoSuchElementException if the iteration has no more elements
+     */
+    @Override
+    public LocalDate next() {
+        if (this.hasNext()) {
+            return dates[index++];
         }
-    }
-
-    @Override
-    public void detach(LocalDate date) {
-        dates.remove(date);
-    }
-
-    @Override
-    public void attach(LocalDate date) {
-        dates.add(date);
+        throw new NoSuchElementException(String.format("the element with index %s is not wasted", index));
     }
 }

@@ -22,30 +22,19 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.service.expensive;
+package com.expense.tracker.repository.expense;
 
-import com.expense.tracker.exception.UnauthorizedException;
-import com.expense.tracker.model.ExpenseDTO;
-import com.expense.tracker.model.tables.pojos.User;
-import com.expense.tracker.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import com.expense.tracker.model.tables.pojos.Expense;
 
 /**
  * @author dimab
- * @version expensive-tracker
+ * @version expense-tracker
  * @apiNote 28.05.2023
  */
-@Service
-@RequiredArgsConstructor
-public class ExpensiveServiceImpl implements ExpensiveService {
-    private final UserRepository userRepository;
+public interface ExpenseRepository {
+    Expense findById(Long id);
 
-    @Override
-    public ExpenseDTO create(ExpenseDTO expenseDTO, String token) {
-        User user = userRepository.findByToken(token);
-        if (user == null) throw new UnauthorizedException();
+    Expense insert(Expense expense);
 
-        return null;
-    }
+    Expense update(Expense expense);
 }

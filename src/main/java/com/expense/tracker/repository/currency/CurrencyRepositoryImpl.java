@@ -22,41 +22,36 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.service.exchange;
+package com.expense.tracker.repository.currency;
 
-import com.expense.tracker.service.iterator.ExchangeHistoryIterator;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import com.expense.tracker.exception.BadRequestException;
+import com.expense.tracker.model.Tables;
+import com.expense.tracker.model.tables.pojos.Currency;
+import lombok.RequiredArgsConstructor;
+import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author dimab
  * @version expense-tracker
  * @apiNote 28.05.2023
  */
-@Service
-public class ExchangeServiceImpl implements ExchangeService {
-    private final Set<LocalDate> dates = new HashSet<>();
+@Repository
+@RequiredArgsConstructor
+public class CurrencyRepositoryImpl implements CurrencyRepository {
+    private final DSLContext dslContext;
 
     @Override
-    @Scheduled(fixedDelayString = "PT1M")
-    public void refresh() {
-        ExchangeHistoryIterator historyIterator = new ExchangeHistoryIterator(dates);
-        while (historyIterator.hasNext()) {
-            LocalDate date = historyIterator.next();
+    public Currency findByName(String name) {
+        Record record = dslContext.select(Tables.CURRENCY)
+                .from(Tables.CURRENCY)
+                .where(Tables.CURRENCY.NAME.equal(name))
+                .fetchOne();
+        if (record == null) {
+            throw new BadRequestException("This currency is not supported");
         }
-    }
 
-    @Override
-    public void detach(LocalDate date) {
-        dates.remove(date);
-    }
-
-    @Override
-    public void attach(LocalDate date) {
-        dates.add(date);
+        return record.into(Currency.class);
     }
 }

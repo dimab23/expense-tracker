@@ -29,7 +29,7 @@ import com.expense.tracker.exception.UnauthorizedException;
 import com.expense.tracker.model.ApiKey;
 import com.expense.tracker.model.UserDTO;
 import com.expense.tracker.model.tables.pojos.User;
-import com.expense.tracker.repository.UserRepository;
+import com.expense.tracker.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,5 +62,13 @@ public class UserServiceImpl implements UserService {
         user = userRepository.insert(userDTO.toUser());
 
         return ApiKey.builder().apiKey(user.getToken()).build();
+    }
+
+    @Override
+    public User findByToken(String token) {
+        User user = userRepository.findByToken(token);
+        if (user == null) throw new UnauthorizedException();
+
+        return user;
     }
 }

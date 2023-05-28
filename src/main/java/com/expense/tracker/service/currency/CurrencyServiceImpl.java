@@ -22,15 +22,13 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.service.exchange;
+package com.expense.tracker.service.currency;
 
-import com.expense.tracker.service.iterator.ExchangeHistoryIterator;
-import org.springframework.scheduling.annotation.Scheduled;
+import com.expense.tracker.model.tables.pojos.Currency;
+import com.expense.tracker.repository.currency.CurrencyRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author dimab
@@ -38,25 +36,20 @@ import java.util.Set;
  * @apiNote 28.05.2023
  */
 @Service
-public class ExchangeServiceImpl implements ExchangeService {
-    private final Set<LocalDate> dates = new HashSet<>();
+@RequiredArgsConstructor
+public class CurrencyServiceImpl implements CurrencyService {
+    private final CurrencyRepository currencyRepository;
+
+    @Value("spring.expense.tracker.default-currency")
+    private String defaultCurrency;
 
     @Override
-    @Scheduled(fixedDelayString = "PT1M")
-    public void refresh() {
-        ExchangeHistoryIterator historyIterator = new ExchangeHistoryIterator(dates);
-        while (historyIterator.hasNext()) {
-            LocalDate date = historyIterator.next();
-        }
+    public String defaultCurrency() {
+        return defaultCurrency;
     }
 
     @Override
-    public void detach(LocalDate date) {
-        dates.remove(date);
-    }
-
-    @Override
-    public void attach(LocalDate date) {
-        dates.add(date);
+    public Currency findByName(String name) {
+        return currencyRepository.findByName(name);
     }
 }

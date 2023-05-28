@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * @author dimab
- * @version expensive-tracker
+ * @version expense-tracker
  * @apiNote 27.05.2023
  */
 @ResponseStatus(code = HttpStatus.BAD_REQUEST)
