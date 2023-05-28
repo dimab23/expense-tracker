@@ -25,6 +25,7 @@
 package com.expense.tracker.repository.currency;
 
 import com.expense.tracker.exception.BadRequestException;
+import com.expense.tracker.exception.NotFoundException;
 import com.expense.tracker.model.Tables;
 import com.expense.tracker.model.tables.pojos.Currency;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +42,19 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class CurrencyRepositoryImpl implements CurrencyRepository {
     private final DSLContext dslContext;
+
+    @Override
+    public Currency findById(Long id) {
+        Record record = dslContext.select(Tables.CURRENCY)
+                .from(Tables.CURRENCY)
+                .where(Tables.CURRENCY.ID.equal(id))
+                .fetchOne();
+        if (record == null) {
+            throw new NotFoundException(String.format("Not found currency with id %s", id));
+        }
+
+        return record.into(Currency.class);
+    }
 
     @Override
     public Currency findByName(String name) {

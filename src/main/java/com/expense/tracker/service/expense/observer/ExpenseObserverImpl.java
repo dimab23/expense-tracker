@@ -24,7 +24,7 @@
 
 package com.expense.tracker.service.expense.observer;
 
-import com.expense.tracker.model.ExpenseDTO;
+import com.expense.tracker.model.expense.ExpenseDTO;
 import com.expense.tracker.service.currency.CurrencyService;
 import com.expense.tracker.service.exchange.ExchangeService;
 import lombok.RequiredArgsConstructor;

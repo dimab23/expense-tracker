@@ -25,7 +25,7 @@
 package com.expense.tracker.service.user;
 
 import com.expense.tracker.model.ApiKey;
-import com.expense.tracker.model.UserDTO;
+import com.expense.tracker.model.user.UserDTO;
 import com.expense.tracker.model.tables.pojos.User;
 
 /**
@@ -34,6 +34,8 @@ import com.expense.tracker.model.tables.pojos.User;
  * @apiNote 27.05.2023
  */
 public interface UserService {
+    User findById(Long id);
+
     ApiKey auth(UserDTO userDTO);
 
     ApiKey create(UserDTO userDTO);

@@ -32,5 +32,7 @@ import com.expense.tracker.model.tables.pojos.Currency;
  * @apiNote 28.05.2023
  */
 public interface CurrencyRepository {
+    Currency findById(Long id);
+
     Currency findByName(String name);
 }

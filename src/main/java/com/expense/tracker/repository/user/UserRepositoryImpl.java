@@ -24,6 +24,7 @@
 
 package com.expense.tracker.repository.user;
 
+import com.expense.tracker.exception.NotFoundException;
 import com.expense.tracker.model.Tables;
 import com.expense.tracker.model.tables.pojos.User;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +50,19 @@ public class UserRepositoryImpl implements UserRepository {
                 .fetchOne();
         if (record == null) {
             throw new IllegalStateException("The user was not created, something went wrong");
+        }
+
+        return record.into(User.class);
+    }
+
+    @Override
+    public User findById(Long id) {
+        Record record = context.select(Tables.USER)
+                .from(Tables.USER)
+                .where(Tables.USER.ID.equal(id))
+                .fetchOne();
+        if (record == null) {
+            throw new NotFoundException(String.format("Not found user by id %s", id));
         }
 
         return record.into(User.class);

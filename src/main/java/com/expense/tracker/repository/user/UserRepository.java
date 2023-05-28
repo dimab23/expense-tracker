@@ -34,6 +34,8 @@ import com.expense.tracker.model.tables.pojos.User;
 public interface UserRepository {
     User insert(User user);
 
+    User findById(Long id);
+
     User findByToken(String token);
 
     User findByUsername(String username);

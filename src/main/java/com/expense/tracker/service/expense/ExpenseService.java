@@ -24,8 +24,8 @@
 
 package com.expense.tracker.service.expense;
 
-import com.expense.tracker.model.ExpenseDTO;
-import com.expense.tracker.model.ExpenseResult;
+import com.expense.tracker.model.expense.ExpenseDTO;
+import com.expense.tracker.model.expense.ExpenseResult;
 import com.expense.tracker.model.tables.pojos.Expense;
 
 /**
@@ -35,6 +35,10 @@ import com.expense.tracker.model.tables.pojos.Expense;
  */
 public interface ExpenseService {
     Expense findById(Long id);
+
+    ExpenseResult delete(String token, long id);
+
+    boolean validatePermission(String token, Expense expense);
 
     ExpenseResult create(ExpenseDTO expenseDTO, String token);
 

@@ -22,7 +22,7 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.model;
+package com.expense.tracker.model.user;
 
 import com.expense.tracker.model.tables.pojos.User;
 import jakarta.validation.constraints.NotBlank;

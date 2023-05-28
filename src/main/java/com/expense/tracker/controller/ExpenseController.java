@@ -24,8 +24,8 @@
 
 package com.expense.tracker.controller;
 
-import com.expense.tracker.model.ExpenseDTO;
-import com.expense.tracker.model.ExpenseResult;
+import com.expense.tracker.model.expense.ExpenseDTO;
+import com.expense.tracker.model.expense.ExpenseResult;
 import com.expense.tracker.service.expense.ExpenseService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -58,5 +58,12 @@ public class ExpenseController {
                                 @Valid @RequestBody ExpenseDTO expenseDTO,
                                 @RequestHeader(value = "api_key") String apiKey) {
         return expenseService.update(expenseDTO, apiKey, id);
+    }
+
+    @DeleteMapping("{expense_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ExpenseResult delete(@PathVariable("expense_id") long id,
+                                @RequestHeader(value = "api_key") String apiKey) {
+        return expenseService.delete(apiKey, id);
     }
 }

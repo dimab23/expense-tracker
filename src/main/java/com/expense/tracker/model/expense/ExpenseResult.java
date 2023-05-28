@@ -22,8 +22,10 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.model;
+package com.expense.tracker.model.expense;
 
+import com.expense.tracker.model.tables.pojos.Currency;
+import com.expense.tracker.model.tables.pojos.Expense;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
@@ -45,4 +47,13 @@ public class ExpenseResult {
     private double payment;
     @JsonProperty("payment_date")
     private LocalDate paymentDate;
+
+    public static ExpenseResult toExpenseResult(Expense expense, Currency currency) {
+        return ExpenseResult.builder()
+                .id(expense.getId())
+                .paymentDate(expense.getPaymentDate())
+                .payment(expense.getPayment())
+                .currency(currency.getName())
+                .build();
+    }
 }

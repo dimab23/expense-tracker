@@ -34,5 +34,7 @@ import com.expense.tracker.model.tables.pojos.Currency;
 public interface CurrencyService {
     String defaultCurrency();
 
+    Currency findById(Long id);
+
     Currency findByName(String name);
 }

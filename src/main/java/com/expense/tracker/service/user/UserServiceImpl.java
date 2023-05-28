@@ -27,8 +27,8 @@ package com.expense.tracker.service.user;
 import com.expense.tracker.exception.BadRequestException;
 import com.expense.tracker.exception.UnauthorizedException;
 import com.expense.tracker.model.ApiKey;
-import com.expense.tracker.model.UserDTO;
 import com.expense.tracker.model.tables.pojos.User;
+import com.expense.tracker.model.user.UserDTO;
 import com.expense.tracker.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -70,5 +70,10 @@ public class UserServiceImpl implements UserService {
         if (user == null) throw new UnauthorizedException();
 
         return user;
+    }
+
+    @Override
+    public User findById(Long id) {
+        return userRepository.findById(id);
     }
 }

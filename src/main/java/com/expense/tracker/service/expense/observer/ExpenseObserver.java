@@ -24,7 +24,7 @@
 
 package com.expense.tracker.service.expense.observer;
 
-import com.expense.tracker.model.ExpenseDTO;
+import com.expense.tracker.model.expense.ExpenseDTO;
 
 /**
  * @author dimab

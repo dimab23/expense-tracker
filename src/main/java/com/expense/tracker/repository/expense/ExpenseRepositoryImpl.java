@@ -44,6 +44,11 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
     private final DSLContext dslContext;
 
     @Override
+    public void deleteById(Long id) {
+        dslContext.delete(Tables.EXPENSE).where(Tables.EXPENSE.ID.equal(id)).execute();
+    }
+
+    @Override
     public Expense findById(Long id) {
         Record record = dslContext.select(Tables.EXPENSE)
                 .from(Tables.EXPENSE)

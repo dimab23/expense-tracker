@@ -32,6 +32,8 @@ import com.expense.tracker.model.tables.pojos.Expense;
  * @apiNote 28.05.2023
  */
 public interface ExpenseRepository {
+    void deleteById(Long id);
+
     Expense findById(Long id);
 
     Expense insert(Expense expense);

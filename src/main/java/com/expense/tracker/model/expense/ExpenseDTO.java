@@ -22,7 +22,7 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.model;
+package com.expense.tracker.model.expense;
 
 import com.expense.tracker.model.tables.pojos.Currency;
 import com.expense.tracker.model.tables.pojos.Expense;
@@ -62,21 +62,11 @@ public class ExpenseDTO {
         return expense;
     }
 
-    public Expense toExpense(Expense expense, Currency currency, User user) {
+    public Expense toExpense(Expense expense, Currency currency) {
         expense.setCurrencyId(currency.getId());
         expense.setPayment(getPayment());
         expense.setPaymentDate(getPaymentDate());
-        expense.setUserId(user.getId());
 
         return expense;
-    }
-
-    public ExpenseResult toExpenseResult(Expense expense) {
-        return ExpenseResult.builder()
-                .id(expense.getId())
-                .paymentDate(expense.getPaymentDate())
-                .payment(expense.getPayment())
-                .currency(getCurrency())
-                .build();
     }
 }

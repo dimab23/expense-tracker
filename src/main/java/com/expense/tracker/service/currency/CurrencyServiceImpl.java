@@ -49,6 +49,11 @@ public class CurrencyServiceImpl implements CurrencyService {
     }
 
     @Override
+    public Currency findById(Long id) {
+        return currencyRepository.findById(id);
+    }
+
+    @Override
     public Currency findByName(String name) {
         return currencyRepository.findByName(name);
     }

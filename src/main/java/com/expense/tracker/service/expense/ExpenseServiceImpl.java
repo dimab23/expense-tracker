@@ -24,8 +24,9 @@
 
 package com.expense.tracker.service.expense;
 
-import com.expense.tracker.model.ExpenseDTO;
-import com.expense.tracker.model.ExpenseResult;
+import com.expense.tracker.exception.UnauthorizedException;
+import com.expense.tracker.model.expense.ExpenseDTO;
+import com.expense.tracker.model.expense.ExpenseResult;
 import com.expense.tracker.model.tables.pojos.Currency;
 import com.expense.tracker.model.tables.pojos.Expense;
 import com.expense.tracker.model.tables.pojos.User;
@@ -57,22 +58,42 @@ public class ExpenseServiceImpl implements ExpenseService {
         Currency currency = currencyService.findByName(expenseDTO.getCurrency());
         expenseObserver.update(expenseDTO);
         Expense expense = expenseRepository.insert(expenseDTO.toExpense(currency, user));
-        return expenseDTO.toExpenseResult(expense);
+
+        return ExpenseResult.toExpenseResult(expense, currency);
     }
 
     @Override
     @Transactional
     public ExpenseResult update(ExpenseDTO expenseDTO, String token, long id) {
-        User user = userService.findByToken(token);
-        expenseObserver.update(expenseDTO);
         Expense expense = findById(id);
+        validatePermission(token, expense);
+        expenseObserver.update(expenseDTO);
         Currency currency = currencyService.findByName(expenseDTO.getCurrency());
-        expense = expenseRepository.update(expenseDTO.toExpense(expense, currency, user));
-        return expenseDTO.toExpenseResult(expense);
+        Expense updated = expenseRepository.update(expenseDTO.toExpense(expense, currency));
+
+        return ExpenseResult.toExpenseResult(updated, currency);
     }
 
     @Override
     public Expense findById(Long id) {
         return expenseRepository.findById(id);
+    }
+
+    @Override
+    @Transactional
+    public ExpenseResult delete(String token, long id) {
+        Expense expense = findById(id);
+        validatePermission(token, expense);
+        expenseRepository.deleteById(id);
+        Currency currency = currencyService.findById(expense.getCurrencyId());
+
+        return ExpenseResult.toExpenseResult(expense, currency);
+    }
+
+    @Override
+    public boolean validatePermission(String token, Expense expense) {
+        User user = userService.findById(expense.getUserId());
+        if (user.getToken().equals(token)) return true;
+        throw new UnauthorizedException();
     }
 }

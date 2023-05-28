@@ -25,7 +25,7 @@
 package com.expense.tracker.controller;
 
 import com.expense.tracker.model.ApiKey;
-import com.expense.tracker.model.UserDTO;
+import com.expense.tracker.model.user.UserDTO;
 import com.expense.tracker.service.user.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
