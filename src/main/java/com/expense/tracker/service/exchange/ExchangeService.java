@@ -24,7 +24,11 @@
 
 package com.expense.tracker.service.exchange;
 
+import com.expense.tracker.model.tables.pojos.Exchange;
+
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author dimab
@@ -32,11 +36,13 @@ import java.time.LocalDate;
  * @apiNote 28.05.2023
  */
 public interface ExchangeService {
-    void refresh();
+    Set<LocalDate> getDates();
 
     void detach(LocalDate date);
 
     void attach(LocalDate date);
 
     boolean findByExchangeDate(LocalDate localDate);
+
+    List<Exchange> insertAll(List<Exchange> exchanges);
 }

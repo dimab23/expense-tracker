@@ -1,7 +1,7 @@
 /*
     MIT License
     
-    Copyright (c) 2023 Beșelea Dumitru & Șaptefrați Victor
+    Copyright (c) 2023 Beșelea Dumitru
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -22,31 +22,13 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.service.expense.observer;
-
-import com.expense.tracker.model.expense.ExpenseDTO;
-import com.expense.tracker.service.currency.CurrencyService;
-import com.expense.tracker.service.exchange.ExchangeService;
-import com.expense.tracker.service.exchange.adapter.ExchangeAdapter;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+package com.expense.tracker.service.exchange.adapter;
 
 /**
  * @author dimab
- * @version expense-tracker
- * @apiNote 28.05.2023
+ * @version expensive-tracker
+ * @apiNote 29.05.2023
  */
-@Service
-@RequiredArgsConstructor
-public class ExpenseObserverImpl implements ExpenseObserver {
-    private final ExchangeAdapter exchangeAdapter;
-    private final CurrencyService currencyService;
-    private final ExchangeService exchangeService;
-
-    @Override
-    public void update(ExpenseDTO expenseDTO) {
-        if (expenseDTO.getCurrency().equals(currencyService.defaultCurrency())) return;
-        exchangeService.attach(expenseDTO.getPaymentDate());
-        exchangeAdapter.refresh();
-    }
+public interface ExchangeAdapter {
+    void refresh();
 }

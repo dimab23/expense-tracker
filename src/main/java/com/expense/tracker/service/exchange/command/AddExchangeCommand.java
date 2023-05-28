@@ -25,7 +25,7 @@
 package com.expense.tracker.service.exchange.command;
 
 import com.expense.tracker.model.tables.pojos.Exchange;
-import com.expense.tracker.repository.exchange.ExchangeRepository;
+import com.expense.tracker.service.exchange.ExchangeService;
 
 import java.util.List;
 
@@ -36,15 +36,15 @@ import java.util.List;
  */
 public class AddExchangeCommand extends Command {
     private final List<Exchange> exchanges;
-    private final ExchangeRepository exchangeRepository;
+    private final ExchangeService exchangeService;
 
-    public AddExchangeCommand(List<Exchange> exchanges, ExchangeRepository exchangeRepository) {
+    public AddExchangeCommand(List<Exchange> exchanges, ExchangeService exchangeService) {
         this.exchanges = exchanges;
-        this.exchangeRepository = exchangeRepository;
+        this.exchangeService = exchangeService;
     }
 
     @Override
     public void execute() {
-        exchangeRepository.insertAll(exchanges);
+        exchangeService.insertAll(exchanges);
     }
 }

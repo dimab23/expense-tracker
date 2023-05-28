@@ -30,6 +30,7 @@ import com.expense.tracker.service.currency.CurrencyService;
 import com.expense.tracker.util.RestTemplateSingleton;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDate;
@@ -51,6 +52,7 @@ public class FrankfurterAppClient implements ExchangeClient {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(API_URL)
                 .path(localDate.toString())
                 .queryParam("from", currencyService.defaultCurrency());
-        return RestTemplateSingleton.getInstance().getForEntity(uriBuilder.toUriString(), ExchangeHistory.class).getBody();
+        RestTemplate restTemplate = RestTemplateSingleton.getInstance();
+        return restTemplate.getForEntity(uriBuilder.toUriString(), ExchangeHistory.class).getBody();
     }
 }

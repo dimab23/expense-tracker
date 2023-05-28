@@ -1,7 +1,7 @@
 /*
     MIT License
     
-    Copyright (c) 2023 Beșelea Dumitru & Șaptefrați Victor
+    Copyright (c) 2023 Beșelea Dumitru
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -22,31 +22,43 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.service.expense.observer;
+package com.expense.tracker.service.exchange.adapter;
 
-import com.expense.tracker.model.expense.ExpenseDTO;
-import com.expense.tracker.service.currency.CurrencyService;
+import com.expense.tracker.client.ExchangeProxy;
+import com.expense.tracker.model.CommandInvoker;
+import com.expense.tracker.model.client.ExchangeHistory;
 import com.expense.tracker.service.exchange.ExchangeService;
-import com.expense.tracker.service.exchange.adapter.ExchangeAdapter;
+import com.expense.tracker.service.exchange.command.AddExchangeCommand;
+import com.expense.tracker.service.exchange.command.Command;
+import com.expense.tracker.service.iterator.ExchangeHistoryIterator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+
 /**
  * @author dimab
- * @version expense-tracker
- * @apiNote 28.05.2023
+ * @version expensive-tracker
+ * @apiNote 29.05.2023
  */
 @Service
 @RequiredArgsConstructor
-public class ExpenseObserverImpl implements ExpenseObserver {
-    private final ExchangeAdapter exchangeAdapter;
-    private final CurrencyService currencyService;
+public class ExchangeProxyAdapter implements ExchangeAdapter {
+    private final ExchangeProxy exchangeProxy;
     private final ExchangeService exchangeService;
 
     @Override
-    public void update(ExpenseDTO expenseDTO) {
-        if (expenseDTO.getCurrency().equals(currencyService.defaultCurrency())) return;
-        exchangeService.attach(expenseDTO.getPaymentDate());
-        exchangeAdapter.refresh();
+    public void refresh() {
+        ExchangeHistoryIterator historyIterator = new ExchangeHistoryIterator(exchangeService.getDates());
+        while (historyIterator.hasNext()) {
+            LocalDate date = historyIterator.next();
+            if (Boolean.FALSE.equals(exchangeService.findByExchangeDate(date))) {
+                ExchangeHistory exchangeHistory = exchangeProxy.history(date);
+                Command command = new AddExchangeCommand(new ArrayList<>(), exchangeService);
+                new CommandInvoker(command).command().execute();
+            }
+            exchangeService.detach(date);
+        }
     }
 }

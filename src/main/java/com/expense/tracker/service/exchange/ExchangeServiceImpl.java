@@ -24,20 +24,14 @@
 
 package com.expense.tracker.service.exchange;
 
-import com.expense.tracker.client.ExchangeProxy;
-import com.expense.tracker.model.CommandInvoker;
-import com.expense.tracker.model.client.ExchangeHistory;
+import com.expense.tracker.model.tables.pojos.Exchange;
 import com.expense.tracker.repository.exchange.ExchangeRepository;
-import com.expense.tracker.service.exchange.command.AddExchangeCommand;
-import com.expense.tracker.service.exchange.command.Command;
-import com.expense.tracker.service.iterator.ExchangeHistoryIterator;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -51,21 +45,10 @@ public class ExchangeServiceImpl implements ExchangeService {
     private final Set<LocalDate> dates = new HashSet<>();
 
     private final ExchangeRepository exchangeRepository;
-    private final ExchangeProxy exchangeProxy;
 
     @Override
-    @Scheduled(fixedDelayString = "PT1M")
-    public void refresh() {
-        ExchangeHistoryIterator historyIterator = new ExchangeHistoryIterator(dates);
-        while (historyIterator.hasNext()) {
-            LocalDate date = historyIterator.next();
-            if (Boolean.FALSE.equals(findByExchangeDate(date))) {
-                ExchangeHistory exchangeHistory = exchangeProxy.history(date);
-                Command command = new AddExchangeCommand(new ArrayList<>(), exchangeRepository);
-                new CommandInvoker(command).command().execute();
-            }
-            detach(date);
-        }
+    public Set<LocalDate> getDates() {
+        return dates;
     }
 
     @Override
@@ -81,5 +64,10 @@ public class ExchangeServiceImpl implements ExchangeService {
     @Override
     public boolean findByExchangeDate(LocalDate localDate) {
         return exchangeRepository.existsByExchangeDate(localDate);
+    }
+
+    @Override
+    public List<Exchange> insertAll(List<Exchange> exchanges) {
+        return exchangeRepository.insertAll(exchanges);
     }
 }
