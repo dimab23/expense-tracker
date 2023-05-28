@@ -1,7 +1,7 @@
 /*
     MIT License
     
-    Copyright (c) 2023 Beșelea Dumitru
+    Copyright (c) 2023 Beșelea Dumitru & Șaptefrați Victor
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -24,11 +24,19 @@
 
 package com.expense.tracker.service.exchange;
 
+import com.expense.tracker.client.ExchangeProxy;
+import com.expense.tracker.model.CommandInvoker;
+import com.expense.tracker.model.client.ExchangeHistory;
+import com.expense.tracker.repository.exchange.ExchangeRepository;
+import com.expense.tracker.service.exchange.command.AddExchangeCommand;
+import com.expense.tracker.service.exchange.command.Command;
 import com.expense.tracker.service.iterator.ExchangeHistoryIterator;
+import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -38,8 +46,12 @@ import java.util.Set;
  * @apiNote 28.05.2023
  */
 @Service
+@RequiredArgsConstructor
 public class ExchangeServiceImpl implements ExchangeService {
     private final Set<LocalDate> dates = new HashSet<>();
+
+    private final ExchangeRepository exchangeRepository;
+    private final ExchangeProxy exchangeProxy;
 
     @Override
     @Scheduled(fixedDelayString = "PT1M")
@@ -47,6 +59,12 @@ public class ExchangeServiceImpl implements ExchangeService {
         ExchangeHistoryIterator historyIterator = new ExchangeHistoryIterator(dates);
         while (historyIterator.hasNext()) {
             LocalDate date = historyIterator.next();
+            if (Boolean.FALSE.equals(findByExchangeDate(date))) {
+                ExchangeHistory exchangeHistory = exchangeProxy.history(date);
+                Command command = new AddExchangeCommand(new ArrayList<>(), exchangeRepository);
+                new CommandInvoker(command).command().execute();
+            }
+            detach(date);
         }
     }
 
@@ -58,5 +76,10 @@ public class ExchangeServiceImpl implements ExchangeService {
     @Override
     public void attach(LocalDate date) {
         dates.add(date);
+    }
+
+    @Override
+    public boolean findByExchangeDate(LocalDate localDate) {
+        return exchangeRepository.existsByExchangeDate(localDate);
     }
 }

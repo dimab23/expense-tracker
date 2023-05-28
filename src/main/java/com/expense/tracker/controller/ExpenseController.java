@@ -66,4 +66,11 @@ public class ExpenseController {
                                 @RequestHeader(value = "api_key") String apiKey) {
         return expenseService.delete(apiKey, id);
     }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public void show(@PathVariable("expense_id") long id,
+                                @RequestHeader(value = "api_key") String apiKey) {
+//        return expenseService.delete(apiKey, id);
+    }
 }

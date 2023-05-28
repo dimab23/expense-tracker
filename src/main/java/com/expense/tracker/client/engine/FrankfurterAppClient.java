@@ -1,7 +1,7 @@
 /*
     MIT License
     
-    Copyright (c) 2023 Beșelea Dumitru & Șaptefrați Victor
+    Copyright (c) 2023 Beșelea Dumitru
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,15 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.service.exchange;
+package com.expense.tracker.client.engine;
+
+import com.expense.tracker.client.ExchangeClient;
+import com.expense.tracker.model.client.ExchangeHistory;
+import com.expense.tracker.service.currency.CurrencyService;
+import com.expense.tracker.util.RestTemplateSingleton;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDate;
 
@@ -31,12 +39,18 @@ import java.time.LocalDate;
  * @version expense-tracker
  * @apiNote 28.05.2023
  */
-public interface ExchangeService {
-    void refresh();
+@Component
+@RequiredArgsConstructor
+public class FrankfurterAppClient implements ExchangeClient {
+    private static final String API_URL = "https://api.frankfurter.app";
 
-    void detach(LocalDate date);
+    private final CurrencyService currencyService;
 
-    void attach(LocalDate date);
-
-    boolean findByExchangeDate(LocalDate localDate);
+    @Override
+    public ExchangeHistory history(LocalDate localDate) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(API_URL)
+                .path(localDate.toString())
+                .queryParam("from", currencyService.defaultCurrency());
+        return RestTemplateSingleton.getInstance().getForEntity(uriBuilder.toUriString(), ExchangeHistory.class).getBody();
+    }
 }

@@ -22,21 +22,24 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.service.exchange;
+package com.expense.tracker.model.client;
+
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 /**
  * @author dimab
- * @version expense-tracker
+ * @version expensive-tracker
  * @apiNote 28.05.2023
  */
-public interface ExchangeService {
-    void refresh();
-
-    void detach(LocalDate date);
-
-    void attach(LocalDate date);
-
-    boolean findByExchangeDate(LocalDate localDate);
+@Getter
+@Setter
+public class ExchangeHistory {
+    private Double amount;
+    private String base;
+    private LocalDate date;
+    private Map<String, Double> rates;
 }

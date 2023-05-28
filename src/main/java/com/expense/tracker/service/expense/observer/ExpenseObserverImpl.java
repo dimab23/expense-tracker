@@ -1,7 +1,7 @@
 /*
     MIT License
     
-    Copyright (c) 2023 Beșelea Dumitru
+    Copyright (c) 2023 Beșelea Dumitru & Șaptefrați Victor
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -45,5 +45,6 @@ public class ExpenseObserverImpl implements ExpenseObserver {
     public void update(ExpenseDTO expenseDTO) {
         if (expenseDTO.getCurrency().equals(currencyService.defaultCurrency())) return;
         exchangeService.attach(expenseDTO.getPaymentDate());
+        exchangeService.refresh();
     }
 }

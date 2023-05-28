@@ -1,7 +1,7 @@
 /*
     MIT License
     
-    Copyright (c) 2023 Beșelea Dumitru
+    Copyright (c) 2023 Beșelea Dumitru & Șaptefrați Victor
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -22,21 +22,21 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.client;
+package com.expense.tracker.repository.exchange;
 
-import org.springframework.stereotype.Component;
+import com.expense.tracker.model.tables.pojos.Exchange;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * @author dimab
- * @version expense-tracker
+ * @author vixeven
+ * @version expensive-tracker
  * @apiNote 28.05.2023
  */
-@Component
-public class ExchangeRateClient implements ExchangeClient {
-    @Override
-    public void history(LocalDate localDate) {
+public interface ExchangeRepository {
+    List<Exchange> insertAll(List<Exchange> exchanges);
 
-    }
+    boolean existsByExchangeDate(LocalDate exchangeDate);
 }

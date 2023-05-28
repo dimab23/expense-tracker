@@ -22,21 +22,26 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.service.exchange;
+package com.expense.tracker.util;
 
-import java.time.LocalDate;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * @author dimab
- * @version expense-tracker
+ * @version expensive-tracker
  * @apiNote 28.05.2023
  */
-public interface ExchangeService {
-    void refresh();
+public class RestTemplateSingleton {
+    private static RestTemplate instance;
 
-    void detach(LocalDate date);
+    private RestTemplateSingleton() {
+        throw new IllegalStateException("Utility class");
+    }
 
-    void attach(LocalDate date);
-
-    boolean findByExchangeDate(LocalDate localDate);
+    public static synchronized RestTemplate getInstance() {
+        if (instance == null) {
+            instance = new RestTemplate();
+        }
+        return instance;
+    }
 }

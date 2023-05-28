@@ -22,21 +22,29 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.service.exchange;
+package com.expense.tracker.service.exchange.command;
 
-import java.time.LocalDate;
+import com.expense.tracker.model.tables.pojos.Exchange;
+import com.expense.tracker.repository.exchange.ExchangeRepository;
+
+import java.util.List;
 
 /**
  * @author dimab
- * @version expense-tracker
- * @apiNote 28.05.2023
+ * @version expensive-tracker
+ * @apiNote 29.05.2023
  */
-public interface ExchangeService {
-    void refresh();
+public class AddExchangeCommand extends Command {
+    private final List<Exchange> exchanges;
+    private final ExchangeRepository exchangeRepository;
 
-    void detach(LocalDate date);
+    public AddExchangeCommand(List<Exchange> exchanges, ExchangeRepository exchangeRepository) {
+        this.exchanges = exchanges;
+        this.exchangeRepository = exchangeRepository;
+    }
 
-    void attach(LocalDate date);
-
-    boolean findByExchangeDate(LocalDate localDate);
+    @Override
+    public void execute() {
+        exchangeRepository.insertAll(exchanges);
+    }
 }

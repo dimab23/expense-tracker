@@ -22,21 +22,32 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.service.exchange;
+package com.expense.tracker.client;
+
+import com.expense.tracker.client.engine.FrankfurterAppClient;
+import com.expense.tracker.model.client.ExchangeHistory;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
 /**
  * @author dimab
- * @version expense-tracker
+ * @version expensive-tracker
  * @apiNote 28.05.2023
  */
-public interface ExchangeService {
-    void refresh();
+@Service
+@RequiredArgsConstructor
+public class ExchangeProxy implements ExchangeClient {
+    private final FrankfurterAppClient frankfurterAppClient;
 
-    void detach(LocalDate date);
-
-    void attach(LocalDate date);
-
-    boolean findByExchangeDate(LocalDate localDate);
+    @Override
+    public ExchangeHistory history(LocalDate localDate) {
+        if (localDate == null) return null;
+        try {
+            return frankfurterAppClient.history(localDate);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

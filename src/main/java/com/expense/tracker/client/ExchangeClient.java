@@ -1,7 +1,7 @@
 /*
     MIT License
     
-    Copyright (c) 2023 Beșelea Dumitru
+    Copyright (c) 2023 Beșelea Dumitru & Șaptefrați Victor
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,8 @@
 
 package com.expense.tracker.client;
 
+import com.expense.tracker.model.client.ExchangeHistory;
+
 import java.time.LocalDate;
 
 /**
@@ -32,5 +34,5 @@ import java.time.LocalDate;
  * @apiNote 28.05.2023
  */
 public interface ExchangeClient {
-    void history(LocalDate localDate);
+    ExchangeHistory history(LocalDate localDate);
 }

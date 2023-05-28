@@ -22,21 +22,13 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.service.exchange;
-
-import java.time.LocalDate;
+package com.expense.tracker.service.exchange.command;
 
 /**
  * @author dimab
  * @version expense-tracker
- * @apiNote 28.05.2023
+ * @apiNote 29.05.2023
  */
-public interface ExchangeService {
-    void refresh();
-
-    void detach(LocalDate date);
-
-    void attach(LocalDate date);
-
-    boolean findByExchangeDate(LocalDate localDate);
+public abstract class Command {
+    public abstract void execute();
 }

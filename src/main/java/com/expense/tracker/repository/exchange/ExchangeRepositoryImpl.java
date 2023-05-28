@@ -22,21 +22,41 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.service.exchange;
+package com.expense.tracker.repository.exchange;
+
+
+import com.expense.tracker.model.Tables;
+import com.expense.tracker.model.tables.pojos.Exchange;
+import lombok.RequiredArgsConstructor;
+import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * @author dimab
- * @version expense-tracker
+ * @author vixeven
+ * @version expensive-tracker
  * @apiNote 28.05.2023
  */
-public interface ExchangeService {
-    void refresh();
+@Repository
+@RequiredArgsConstructor
+public class ExchangeRepositoryImpl implements ExchangeRepository {
+    private final DSLContext dslContext;
 
-    void detach(LocalDate date);
+    @Override
+    public List<Exchange> insertAll(List<Exchange> exchanges) {
+        return null;
+    }
 
-    void attach(LocalDate date);
-
-    boolean findByExchangeDate(LocalDate localDate);
+    @Override
+    public boolean existsByExchangeDate(LocalDate exchangeDate) {
+        Record record = dslContext.select(Tables.EXCHANGE)
+                .from(Tables.EXCHANGE)
+                .where(Tables.EXCHANGE.EXCHANGE_DATE.eq(exchangeDate))
+                .fetchOne();
+        return record != null;
+    }
 }
