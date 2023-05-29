@@ -42,7 +42,7 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExpenseResult {
+public class ExpenseResult implements Cloneable {
     private Long id;
     private String currency;
     private double payment;
@@ -56,5 +56,14 @@ public class ExpenseResult {
                 .payment(expense.getPayment())
                 .currency(currency.getName())
                 .build();
+    }
+
+    @Override
+    public ExpenseResult clone() {
+        try {
+            return (ExpenseResult) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

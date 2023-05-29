@@ -50,6 +50,6 @@ public class ExpenseResultData extends ExpenseResult {
     }
 
     public static ExpenseResultData toExpenseResultData(Expense expense, Double exchangeRate, Currency currency) {
-        return new ExpenseResultData(ExpenseResult.toExpenseResult(expense, currency), exchangeRate);
+        return new ExpenseResultData(ExpenseResult.toExpenseResult(expense, currency).clone(), exchangeRate);
     }
 }
