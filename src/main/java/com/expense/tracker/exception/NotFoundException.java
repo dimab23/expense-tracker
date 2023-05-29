@@ -26,6 +26,7 @@ package com.expense.tracker.exception;
 
 /**
  * @author dimab
+ * @author vixeven
  * @version expense-tracker
  * @apiNote 28.05.2023
  */

@@ -29,8 +29,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * @author dimab
+ * @author vixeven
  * @version expense-tracker
- * @apiNote 27.05.2023
+ * @apiNote 28.05.2023
  */
 @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
 public class UnauthorizedException extends RuntimeException {

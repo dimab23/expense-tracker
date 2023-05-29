@@ -29,6 +29,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * @author dimab
+ * @author vixeven
+ * @version expense-tracker
+ * @apiNote 28.05.2023
  */
 @SpringBootApplication
 public class ExpenseTrackerApplication {

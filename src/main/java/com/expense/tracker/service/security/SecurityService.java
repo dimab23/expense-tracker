@@ -26,8 +26,9 @@ package com.expense.tracker.service.security;
 
 /**
  * @author dimab
- * @version expensive-tracker
- * @apiNote 29.05.2023
+ * @author vixeven
+ * @version expense-tracker
+ * @apiNote 28.05.2023
  */
 public interface SecurityService {
     void hasAccessRights(String token);

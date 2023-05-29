@@ -26,8 +26,9 @@ package com.expense.tracker.service.exchange.adapter;
 
 /**
  * @author dimab
- * @version expensive-tracker
- * @apiNote 29.05.2023
+ * @author vixeven
+ * @version expense-tracker
+ * @apiNote 28.05.2023
  */
 public interface ExchangeAdapter {
     void refresh();

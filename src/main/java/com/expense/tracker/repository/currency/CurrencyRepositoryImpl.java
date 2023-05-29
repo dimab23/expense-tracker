@@ -38,6 +38,7 @@ import java.util.Set;
 
 /**
  * @author dimab
+ * @author vixeven
  * @version expense-tracker
  * @apiNote 28.05.2023
  */

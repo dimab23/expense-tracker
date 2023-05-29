@@ -26,8 +26,9 @@ package com.expense.tracker.service.exchange.command;
 
 /**
  * @author dimab
+ * @author vixeven
  * @version expense-tracker
- * @apiNote 29.05.2023
+ * @apiNote 28.05.2023
  */
 public abstract class Command {
     public abstract void execute();

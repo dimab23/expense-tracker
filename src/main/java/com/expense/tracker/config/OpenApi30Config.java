@@ -31,8 +31,9 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * @author dimab
+ * @author vixeven
  * @version expense-tracker
- * @apiNote 27.05.2023
+ * @apiNote 28.05.2023
  */
 @Configuration
 @OpenAPIDefinition(info = @Info(title = "Expense Tracker API", version = "v1"))

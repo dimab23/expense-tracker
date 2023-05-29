@@ -31,8 +31,9 @@ import java.util.List;
 
 /**
  * @author dimab
- * @version expensive-tracker
- * @apiNote 29.05.2023
+ * @author vixeven
+ * @version expense-tracker
+ * @apiNote 28.05.2023
  */
 public class AddExchangeCommand extends Command {
     private final List<Exchange> exchanges;

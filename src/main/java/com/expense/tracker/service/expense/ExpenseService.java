@@ -31,6 +31,7 @@ import com.expense.tracker.model.tables.pojos.Expense;
 
 /**
  * @author dimab
+ * @author vixeven
  * @version expense-tracker
  * @apiNote 28.05.2023
  */

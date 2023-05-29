@@ -28,8 +28,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * @author dimab
+ * @author vixeven
  * @version expense-tracker
- * @apiNote 27.05.2023
+ * @apiNote 28.05.2023
  */
 public record ApiKey(@JsonProperty("api_key") String apiKey) {
     public ApiKey(String apiKey) {

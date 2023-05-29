@@ -28,6 +28,7 @@ import com.expense.tracker.model.expense.ExpenseDTO;
 
 /**
  * @author dimab
+ * @author vixeven
  * @version expense-tracker
  * @apiNote 28.05.2023
  */

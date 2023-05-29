@@ -33,6 +33,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * @author dimab
+ * @author vixeven
  * @version expense-tracker
  * @apiNote 28.05.2023
  */

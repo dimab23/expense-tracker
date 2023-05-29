@@ -33,7 +33,8 @@ import java.time.LocalDate;
 
 /**
  * @author dimab
- * @version expensive-tracker
+ * @author vixeven
+ * @version expense-tracker
  * @apiNote 28.05.2023
  */
 @Service

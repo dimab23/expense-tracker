@@ -39,8 +39,9 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * @author dimab
+ * @author vixeven
  * @version expense-tracker
- * @apiNote 27.05.2023
+ * @apiNote 28.05.2023
  */
 @Validated
 @RestController
