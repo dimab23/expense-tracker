@@ -48,6 +48,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ApiKey auth(UserDTO userDTO, String token) {
+        securityService.hasAccessRights(token);
         User user = userRepository.findByUsername(userDTO.getUsername());
         if (user == null) throw new UnauthorizedException();
         if (userDTO.isCorrectPassword(user)) return ApiKey.builder().apiKey(user.getToken()).build();
