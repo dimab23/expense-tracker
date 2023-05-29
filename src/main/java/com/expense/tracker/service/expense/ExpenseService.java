@@ -24,6 +24,7 @@
 
 package com.expense.tracker.service.expense;
 
+import com.expense.tracker.model.Pagination;
 import com.expense.tracker.model.expense.ExpenseDTO;
 import com.expense.tracker.model.expense.ExpenseResult;
 import com.expense.tracker.model.tables.pojos.Expense;
@@ -37,6 +38,8 @@ public interface ExpenseService {
     Expense findById(Long id);
 
     ExpenseResult delete(String token, long id);
+
+    Pagination findAll(int page, int perPage, String token);
 
     boolean validatePermission(String token, Expense expense);
 

@@ -29,11 +29,14 @@ import com.expense.tracker.model.Tables;
 import com.expense.tracker.model.tables.pojos.Exchange;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
+import org.jooq.Query;
 import org.jooq.Record;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author dimab
@@ -48,15 +51,34 @@ public class ExchangeRepositoryImpl implements ExchangeRepository {
 
     @Override
     public List<Exchange> insertAll(List<Exchange> exchanges) {
-        return null;
+        List<Query> queries = new ArrayList<>();
+        for (Exchange exchange : exchanges) {
+            Query query = dslContext.insertInto(Tables.EXCHANGE, Tables.EXCHANGE.CURRENCY_ID, Tables.EXCHANGE.VALUE,
+                    Tables.EXCHANGE.EXCHANGE_DATE
+            ).values(exchange.getCurrencyId(), exchange.getValue(), exchange.getExchangeDate());
+            queries.add(query);
+        }
+
+        dslContext.batch(queries).execute();
+        return exchanges;
     }
 
     @Override
     public boolean existsByExchangeDate(LocalDate exchangeDate) {
         Record record = dslContext.select(Tables.EXCHANGE)
                 .from(Tables.EXCHANGE)
-                .where(Tables.EXCHANGE.EXCHANGE_DATE.eq(exchangeDate))
+                .where(Tables.EXCHANGE.EXCHANGE_DATE.equal(exchangeDate))
+                .limit(1)
                 .fetchOne();
         return record != null;
+    }
+
+    @Override
+    public List<Exchange> findByExchangeDateIn(Set<LocalDate> dates) {
+        return dslContext.select(Tables.EXCHANGE)
+                .from(Tables.EXCHANGE)
+                .where(Tables.EXCHANGE.EXCHANGE_DATE.in(dates))
+                .fetch()
+                .into(Exchange.class);
     }
 }

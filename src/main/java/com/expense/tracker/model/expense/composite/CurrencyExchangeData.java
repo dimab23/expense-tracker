@@ -1,7 +1,7 @@
 /*
     MIT License
     
-    Copyright (c) 2023 Beșelea Dumitru & Șaptefrați Victor
+    Copyright (c) 2023 Beșelea Dumitru
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -22,25 +22,12 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.repository.expense;
-
-import com.expense.tracker.model.tables.pojos.Expense;
-
-import java.util.List;
+package com.expense.tracker.model.expense.composite;
 
 /**
  * @author dimab
- * @version expense-tracker
- * @apiNote 28.05.2023
+ * @version expensive-tracker
+ * @apiNote 29.05.2023
  */
-public interface ExpenseRepository {
-    void deleteById(Long id);
-
-    Expense findById(Long id);
-
-    Expense insert(Expense expense);
-
-    Expense update(Expense expense);
-
-    List<Expense> findAll(long offset, int limit, Long userId);
+public record CurrencyExchangeData(String code, double exchangeRate) implements CurrencyExchange {
 }

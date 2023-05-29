@@ -33,6 +33,9 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Set;
+
 /**
  * @author dimab
  * @version expense-tracker
@@ -67,5 +70,23 @@ public class CurrencyRepositoryImpl implements CurrencyRepository {
         }
 
         return record.into(Currency.class);
+    }
+
+    @Override
+    public List<Currency> findByIdIn(Set<Long> ids) {
+        return dslContext.select(Tables.CURRENCY)
+                .from(Tables.CURRENCY)
+                .where(Tables.CURRENCY.ID.in(ids))
+                .fetch()
+                .into(Currency.class);
+    }
+
+    @Override
+    public List<Currency> findNameIn(Set<String> names) {
+        return dslContext.select(Tables.CURRENCY)
+                .from(Tables.CURRENCY)
+                .where(Tables.CURRENCY.NAME.in(names))
+                .fetch()
+                .into(Currency.class);
     }
 }

@@ -26,6 +26,9 @@ package com.expense.tracker.repository.currency;
 
 import com.expense.tracker.model.tables.pojos.Currency;
 
+import java.util.List;
+import java.util.Set;
+
 /**
  * @author dimab
  * @version expense-tracker
@@ -35,4 +38,8 @@ public interface CurrencyRepository {
     Currency findById(Long id);
 
     Currency findByName(String name);
+
+    List<Currency> findByIdIn(Set<Long> ids);
+
+    List<Currency> findNameIn(Set<String> names);
 }

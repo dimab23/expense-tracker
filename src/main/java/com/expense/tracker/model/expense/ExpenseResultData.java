@@ -1,7 +1,7 @@
 /*
     MIT License
     
-    Copyright (c) 2023 Beșelea Dumitru & Șaptefrați Victor
+    Copyright (c) 2023 Beșelea Dumitru
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -22,25 +22,33 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.repository.expense;
+package com.expense.tracker.model.expense;
 
+import com.expense.tracker.model.tables.pojos.Currency;
 import com.expense.tracker.model.tables.pojos.Expense;
-
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author dimab
- * @version expense-tracker
- * @apiNote 28.05.2023
+ * @version expensive-tracker
+ * @apiNote 29.05.2023
  */
-public interface ExpenseRepository {
-    void deleteById(Long id);
+@Getter
+@Setter
+public class ExpenseResultData extends ExpenseResult {
+    @JsonProperty("exchange_rate")
+    private Double exchangeRate;
 
-    Expense findById(Long id);
+    public ExpenseResultData(ExpenseResult expenseResult, Double exchangeRate) {
+        super(expenseResult.getId(), expenseResult.getCurrency(), expenseResult.getPayment(),
+                expenseResult.getPaymentDate()
+        );
+        this.exchangeRate = exchangeRate;
+    }
 
-    Expense insert(Expense expense);
-
-    Expense update(Expense expense);
-
-    List<Expense> findAll(long offset, int limit, Long userId);
+    public static ExpenseResultData toExpenseResultData(Expense expense, Double exchangeRate, Currency currency) {
+        return new ExpenseResultData(ExpenseResult.toExpenseResult(expense, currency), exchangeRate);
+    }
 }

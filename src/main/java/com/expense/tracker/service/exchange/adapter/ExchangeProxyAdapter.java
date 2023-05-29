@@ -27,15 +27,22 @@ package com.expense.tracker.service.exchange.adapter;
 import com.expense.tracker.client.ExchangeProxy;
 import com.expense.tracker.model.CommandInvoker;
 import com.expense.tracker.model.client.ExchangeHistory;
+import com.expense.tracker.model.tables.pojos.Currency;
+import com.expense.tracker.model.tables.pojos.Exchange;
+import com.expense.tracker.service.currency.CurrencyService;
 import com.expense.tracker.service.exchange.ExchangeService;
 import com.expense.tracker.service.exchange.command.AddExchangeCommand;
 import com.expense.tracker.service.exchange.command.Command;
 import com.expense.tracker.service.iterator.ExchangeHistoryIterator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author dimab
@@ -47,18 +54,36 @@ import java.util.ArrayList;
 public class ExchangeProxyAdapter implements ExchangeAdapter {
     private final ExchangeProxy exchangeProxy;
     private final ExchangeService exchangeService;
+    private final CurrencyService currencyService;
 
+    @Async
     @Override
     public void refresh() {
         ExchangeHistoryIterator historyIterator = new ExchangeHistoryIterator(exchangeService.getDates());
         while (historyIterator.hasNext()) {
             LocalDate date = historyIterator.next();
-            if (Boolean.FALSE.equals(exchangeService.findByExchangeDate(date))) {
+            if (Boolean.FALSE.equals(exchangeService.existsByExchangeDate(date))) {
                 ExchangeHistory exchangeHistory = exchangeProxy.history(date);
-                Command command = new AddExchangeCommand(new ArrayList<>(), exchangeService);
+                Command command = new AddExchangeCommand(mapper(exchangeHistory, date), exchangeService);
                 new CommandInvoker(command).command().execute();
             }
             exchangeService.detach(date);
         }
+    }
+
+    private List<Exchange> mapper(ExchangeHistory exchangeHistory, LocalDate date) {
+        Map<String, Long> currency = currencyService.findNameIn(exchangeHistory.getRates().keySet()).stream()
+                .collect(Collectors.toMap(Currency::getName, Currency::getId));
+        List<Exchange> exchanges = new ArrayList<>();
+        for (Map.Entry<String, Double> rate : exchangeHistory.getRates().entrySet()) {
+            Long currencyId = currency.get(rate.getKey());
+            Exchange exchange = new Exchange();
+            exchange.setCurrencyId(currencyId);
+            exchange.setValue(rate.getValue());
+            exchange.setExchangeDate(date);
+            exchanges.add(exchange);
+        }
+
+        return exchanges;
     }
 }

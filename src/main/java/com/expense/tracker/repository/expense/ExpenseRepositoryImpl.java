@@ -33,6 +33,8 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @author dimab
  * @version expense-tracker
@@ -89,5 +91,16 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
             throw new IllegalStateException("Something went wrong");
         }
         return record.into(Expense.class);
+    }
+
+    @Override
+    public List<Expense> findAll(long offset, int limit, Long userId) {
+        return dslContext.select(Tables.EXPENSE)
+                .from(Tables.EXPENSE)
+                .where(Tables.EXPENSE.USER_ID.equal(userId))
+                .limit(limit)
+                .offset(offset)
+                .fetch()
+                .into(Expense.class);
     }
 }

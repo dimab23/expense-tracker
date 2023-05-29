@@ -1,7 +1,7 @@
 /*
     MIT License
     
-    Copyright (c) 2023 Beșelea Dumitru & Șaptefrați Victor
+    Copyright (c) 2023 Beșelea Dumitru
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -22,25 +22,43 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.repository.expense;
+package com.expense.tracker.model.expense.composite;
 
-import com.expense.tracker.model.tables.pojos.Expense;
-
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author dimab
- * @version expense-tracker
- * @apiNote 28.05.2023
+ * @version expensive-tracker
+ * @apiNote 29.05.2023
  */
-public interface ExpenseRepository {
-    void deleteById(Long id);
+public class CompositeCurrency implements CurrencyExchange {
+    private String code;
+    private final List<CurrencyExchange> subCurrencies;
 
-    Expense findById(Long id);
+    public CompositeCurrency() {
+        this.subCurrencies = new ArrayList<>();
+    }
 
-    Expense insert(Expense expense);
+    public void addCurrency(CurrencyExchange currency) {
+        subCurrencies.add(currency);
+    }
 
-    Expense update(Expense expense);
+    public void removeCurrency(CurrencyExchange currency) {
+        subCurrencies.remove(currency);
+    }
 
-    List<Expense> findAll(long offset, int limit, Long userId);
+    @Override
+    public String code() {
+        return code;
+    }
+
+    @Override
+    public double exchangeRate() {
+        double totalExchangeRate = 1.0;
+        for (CurrencyExchange currency : subCurrencies) {
+            totalExchangeRate *= currency.exchangeRate();
+        }
+        return totalExchangeRate;
+    }
 }

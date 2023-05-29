@@ -24,13 +24,17 @@
 
 package com.expense.tracker.controller;
 
+import com.expense.tracker.model.Pagination;
 import com.expense.tracker.model.expense.ExpenseDTO;
 import com.expense.tracker.model.expense.ExpenseResult;
 import com.expense.tracker.service.expense.ExpenseService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -38,6 +42,7 @@ import org.springframework.web.bind.annotation.*;
  * @version expense-tracker
  * @apiNote 27.05.2023
  */
+@Validated
 @RestController
 @Tag(name = "Expenses")
 @RequiredArgsConstructor
@@ -69,8 +74,9 @@ public class ExpenseController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public void show(@PathVariable("expense_id") long id,
-                                @RequestHeader(value = "api_key") String apiKey) {
-//        return expenseService.delete(apiKey, id);
+    public Pagination findAll(@RequestHeader(value = "api_key") String apiKey,
+                              @RequestParam("page") @Min(0) int page,
+                              @RequestParam("page_size") @Min(1) @Max(50) int pageSize) {
+        return expenseService.findAll(page, pageSize, apiKey);
     }
 }

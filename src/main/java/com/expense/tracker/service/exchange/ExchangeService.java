@@ -42,7 +42,9 @@ public interface ExchangeService {
 
     void attach(LocalDate date);
 
-    boolean findByExchangeDate(LocalDate localDate);
+    boolean existsByExchangeDate(LocalDate localDate);
 
     List<Exchange> insertAll(List<Exchange> exchanges);
+
+    List<Exchange> findByExchangeDateIn(Set<LocalDate> dates);
 }

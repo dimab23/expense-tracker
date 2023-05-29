@@ -62,12 +62,17 @@ public class ExchangeServiceImpl implements ExchangeService {
     }
 
     @Override
-    public boolean findByExchangeDate(LocalDate localDate) {
+    public boolean existsByExchangeDate(LocalDate localDate) {
         return exchangeRepository.existsByExchangeDate(localDate);
     }
 
     @Override
     public List<Exchange> insertAll(List<Exchange> exchanges) {
         return exchangeRepository.insertAll(exchanges);
+    }
+
+    @Override
+    public List<Exchange> findByExchangeDateIn(Set<LocalDate> dates) {
+        return exchangeRepository.findByExchangeDateIn(dates);
     }
 }

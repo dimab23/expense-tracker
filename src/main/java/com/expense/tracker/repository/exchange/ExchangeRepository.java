@@ -28,6 +28,7 @@ import com.expense.tracker.model.tables.pojos.Exchange;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author dimab
@@ -39,4 +40,6 @@ public interface ExchangeRepository {
     List<Exchange> insertAll(List<Exchange> exchanges);
 
     boolean existsByExchangeDate(LocalDate exchangeDate);
+
+    List<Exchange> findByExchangeDateIn(Set<LocalDate> dates);
 }

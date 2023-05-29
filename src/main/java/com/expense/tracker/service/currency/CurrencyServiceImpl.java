@@ -30,6 +30,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Set;
+
 /**
  * @author dimab
  * @version expense-tracker
@@ -40,7 +43,7 @@ import org.springframework.stereotype.Service;
 public class CurrencyServiceImpl implements CurrencyService {
     private final CurrencyRepository currencyRepository;
 
-    @Value("spring.expense.tracker.default-currency")
+    @Value("${spring.expense.tracker.default-currency}")
     private String defaultCurrency;
 
     @Override
@@ -56,5 +59,15 @@ public class CurrencyServiceImpl implements CurrencyService {
     @Override
     public Currency findByName(String name) {
         return currencyRepository.findByName(name);
+    }
+
+    @Override
+    public List<Currency> findByIdIn(Set<Long> ids) {
+        return currencyRepository.findByIdIn(ids);
+    }
+
+    @Override
+    public List<Currency> findNameIn(Set<String> names) {
+        return currencyRepository.findNameIn(names);
     }
 }
