@@ -27,6 +27,7 @@ package com.expense.tracker.controller;
 import com.expense.tracker.model.ApiKey;
 import com.expense.tracker.model.user.UserDTO;
 import com.expense.tracker.service.user.UserService;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -49,13 +50,17 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiKey create(@Valid @RequestBody UserDTO userDTO) {
-        return userService.create(userDTO);
+    public ApiKey create(@Valid @RequestBody UserDTO userDTO,
+                         @Parameter(hidden = true)
+                         @RequestHeader(value = "Authorization", defaultValue = "") String token) {
+        return userService.create(userDTO, token);
     }
 
     @PostMapping("auth")
     @ResponseStatus(HttpStatus.OK)
-    public ApiKey auth(@Valid @RequestBody UserDTO userDTO) {
-        return userService.auth(userDTO);
+    public ApiKey auth(@Valid @RequestBody UserDTO userDTO,
+                       @Parameter(hidden = true)
+                       @RequestHeader(value = "Authorization", defaultValue = "") String token) {
+        return userService.auth(userDTO, token);
     }
 }

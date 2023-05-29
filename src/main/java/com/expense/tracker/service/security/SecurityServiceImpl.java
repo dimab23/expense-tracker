@@ -1,7 +1,7 @@
 /*
     MIT License
-
-    Copyright (c) 2023 Beșelea Dumitru & Șaptefrați Victor
+    
+    Copyright (c) 2023 Beșelea Dumitru
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -22,23 +22,25 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.service.user;
+package com.expense.tracker.service.security;
 
-import com.expense.tracker.model.ApiKey;
-import com.expense.tracker.model.user.UserDTO;
-import com.expense.tracker.model.tables.pojos.User;
+import com.expense.tracker.exception.UnauthorizedException;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 /**
  * @author dimab
- * @version expense-tracker
- * @apiNote 27.05.2023
+ * @version expensive-tracker
+ * @apiNote 29.05.2023
  */
-public interface UserService {
-    User findById(Long id);
+@Service
+public class SecurityServiceImpl implements SecurityService {
+    @Value("${spring.application.token}")
+    private String token;
 
-    User findByToken(String token);
-
-    ApiKey auth(UserDTO userDTO, String token);
-
-    ApiKey create(UserDTO userDTO, String token);
+    @Override
+    public void hasAccessRights(String token) {
+        if (this.token.equals(token)) return;
+        throw new UnauthorizedException("Invalid token");
+    }
 }

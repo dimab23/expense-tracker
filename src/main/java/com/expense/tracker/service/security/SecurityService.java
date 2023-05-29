@@ -1,7 +1,7 @@
 /*
     MIT License
-
-    Copyright (c) 2023 Beșelea Dumitru & Șaptefrați Victor
+    
+    Copyright (c) 2023 Beșelea Dumitru
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -22,23 +22,13 @@
     SOFTWARE.
  */
 
-package com.expense.tracker.service.user;
-
-import com.expense.tracker.model.ApiKey;
-import com.expense.tracker.model.user.UserDTO;
-import com.expense.tracker.model.tables.pojos.User;
+package com.expense.tracker.service.security;
 
 /**
  * @author dimab
- * @version expense-tracker
- * @apiNote 27.05.2023
+ * @version expensive-tracker
+ * @apiNote 29.05.2023
  */
-public interface UserService {
-    User findById(Long id);
-
-    User findByToken(String token);
-
-    ApiKey auth(UserDTO userDTO, String token);
-
-    ApiKey create(UserDTO userDTO, String token);
+public interface SecurityService {
+    void hasAccessRights(String token);
 }

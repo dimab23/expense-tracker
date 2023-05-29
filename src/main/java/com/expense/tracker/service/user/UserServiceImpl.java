@@ -30,6 +30,7 @@ import com.expense.tracker.model.ApiKey;
 import com.expense.tracker.model.tables.pojos.User;
 import com.expense.tracker.model.user.UserDTO;
 import com.expense.tracker.repository.user.UserRepository;
+import com.expense.tracker.service.security.SecurityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,9 +44,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final SecurityService securityService;
 
     @Override
-    public ApiKey auth(UserDTO userDTO) {
+    public ApiKey auth(UserDTO userDTO, String token) {
         User user = userRepository.findByUsername(userDTO.getUsername());
         if (user == null) throw new UnauthorizedException();
         if (userDTO.isCorrectPassword(user)) return ApiKey.builder().apiKey(user.getToken()).build();
@@ -54,7 +56,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public ApiKey create(UserDTO userDTO) {
+    public ApiKey create(UserDTO userDTO, String token) {
+        securityService.hasAccessRights(token);
         User user = userRepository.findByUsername(userDTO.getUsername());
         if (user != null) {
             throw new BadRequestException("This username is already taken");
